@@ -19,11 +19,12 @@
 
   h1 {
     color: #ff3399;
-    font-size: 3rem;
+    font-size: 6vw; /* responsive text */
     text-align: center;
     text-shadow: 2px 2px #fff;
     animation: bounce 1s ease infinite alternate;
     z-index: 1;
+    position: relative;
   }
 
   @keyframes bounce {
@@ -31,27 +32,35 @@
     100% { transform: translateY(-20px); }
   }
 
+  /* Heart shape using pseudo-elements */
   .heart {
     position: absolute;
     width: 20px;
     height: 20px;
-    background: #ff66cc;
+    background: red;
     transform: rotate(-45deg);
     animation: floatUp 5s linear infinite;
   }
 
   .heart::before,
   .heart::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 20px;
     height: 20px;
-    background: #ff66cc;
+    background: red;
     border-radius: 50%;
   }
 
-  .heart::before { top: -10px; left: 0; }
-  .heart::after { top: 0; left: 10px; }
+  .heart::before {
+    top: -10px;
+    left: 0;
+  }
+
+  .heart::after {
+    top: 0;
+    left: 10px;
+  }
 
   @keyframes floatUp {
     0% { transform: translateY(100vh) rotate(-45deg); opacity: 1; }
@@ -74,18 +83,28 @@
     50% { opacity: 1; transform: scale(1.5); }
     100% { opacity: 0; transform: scale(0); }
   }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 8vw; }
+  }
 </style>
 </head>
 <body>
 <h1>🎉 Happy 1st Anniversary! 🎉</h1>
 
 <script>
-  // Create hearts
+  const colors = ['#ff66cc','#ff3399','#ff99cc','#ff6699','#ffccff'];
+
+  // Create heart
   function createHeart() {
     const heart = document.createElement('div');
     heart.className = 'heart';
+    const size = 10 + Math.random() * 20;
+    heart.style.width = heart.style.height = size + 'px';
     heart.style.left = Math.random() * window.innerWidth + 'px';
-    heart.style.width = heart.style.height = (10 + Math.random() * 20) + 'px';
+    heart.style.background = colors[Math.floor(Math.random() * colors.length)];
+    heart.style.setProperty('--color', heart.style.background);
+    heart.querySelectorAll?.forEach;
     document.body.appendChild(heart);
     setTimeout(() => heart.remove(), 5000);
   }
@@ -101,6 +120,19 @@
     setTimeout(() => sparkle.remove(), 1000);
   }
   setInterval(createSparkle, 200);
+
+  // Click to make hearts
+  document.body.addEventListener('click', (e) => {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    const size = 15 + Math.random() * 20;
+    heart.style.width = heart.style.height = size + 'px';
+    heart.style.left = e.clientX - size/2 + 'px';
+    heart.style.top = e.clientY - size/2 + 'px';
+    heart.style.background = colors[Math.floor(Math.random() * colors.length)];
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 5000);
+  });
 </script>
 </body>
 </html>
